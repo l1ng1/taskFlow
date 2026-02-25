@@ -1,7 +1,7 @@
-type TaskStatus = 'todo' | 'in-progress' | 'done';
-type TaskPriority = 'low' | 'medium' | 'high' ;
+export type TaskStatus = 'todo' | 'in-progress' | 'done';
+export type TaskPriority = 'low' | 'medium' | 'high' ;
 
-interface Task {
+export interface Task {
     id:string,
     title:string,
     description:string,
@@ -12,11 +12,13 @@ interface Task {
     tags:string[],
 }
 
-type CreateTaskDTO = Omit<Task , 'id'|'createdAt'|'updatedAt'>
-type UpdateTaskDTO = Partial<Task> & Pick<Task , 'id'>;
+export type CreateTaskDTO = Omit<Task , 'id'|'createdAt'|'updatedAt'>
+export type UpdateTaskDTO = Partial<Task> & Pick<Task , 'id'>;
 
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
     success:boolean,
     data:T | null,
     error:string | null
 }
+
+
