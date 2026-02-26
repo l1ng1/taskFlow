@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type {Task , TaskPriority} from '../types/index'
+import type {Task , TaskPriority , CreateTaskDTO, ApiResponse, UpdateTaskDTO, TaskStatus} from '../types/index'
 
 
 export const useTasksStore = defineStore('tasks',{
@@ -34,5 +34,67 @@ export const useTasksStore = defineStore('tasks',{
             const procent = (doneTasks*100)/state.tasks.length
             return procent;
         }
+    },
+    actions:{
+
+        addTask(dto: CreateTaskDTO): ApiResponse<Task>{
+            try{
+                const newTask = {
+                ...dto,
+                id:crypto.randomUUID(),
+                createdAt:Date.now(),
+                updatedAt:Date.now(),
+                
+            }
+            this.tasks.push(newTask);
+
+            return {
+                success:true,
+                data:newTask,
+                error:null
+            }
+
+            } catch(e){
+                    return {
+                    success:false,
+                    data:null,
+                    error:"не удалось создать задачу"
+                }
+            }
+        },
+
+        updateTask(dto:UpdateTaskDTO): ApiResponse<Task>{
+            try{
+                const index = this.tasks.findIndex(task => task.id === dto.id)
+                if (index === -1) return { success: false, data: null, error: 'Задача не найдена' }
+
+                this.tasks[index] = { ...this.tasks[index], ...dto, updatedAt: Date.now() } as Task
+                return { success: true, data: this.tasks[index], error: null }
+            } catch(e){
+                return{success:false,data:null,error:"Не получилось обновить задание"}
+            }
+        },
+
+        deleteTask(id:string): ApiResponse<boolean>{
+            try{
+                const index = this.tasks.findIndex(task => task.id === id)
+                if(index === -1) return {success:false,data:false,error:'Задача не найдена'}
+                this.tasks.splice(index,1);
+                return {success:true,data:true,error:null}                
+            } catch(e){
+                return {success:false,data:null,error:"не получилдось удалить задание"}
+            }
+        },
+
+        moveTask(id: string, status: TaskStatus): void {
+            const index = this.tasks.findIndex(task => task.id === id)
+            if (index === -1) return
+            this.tasks[index]!.status = status
+        }
+
+
+
+
+
     }
 })
