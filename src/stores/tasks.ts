@@ -90,6 +90,19 @@ export const useTasksStore = defineStore('tasks',{
             const index = this.tasks.findIndex(task => task.id === id)
             if (index === -1) return
             this.tasks[index]!.status = status
+        },
+
+        clearCompleated(): ApiResponse<number>{
+            try{
+                const countBefore = this.tasks.length;
+                this.tasks = this.tasks.filter(task => task.status !== 'done');
+                const deletedTasks = countBefore - this.tasks.length;
+
+                if(deletedTasks === 0) return {success:false,data:0,error:'Нет выполенных заданий'}
+                return {success:true,data:deletedTasks,error:null} 
+            } catch(e){
+                return {success:false,data:null,error:'Не удалось удалить все выполненные задания'}
+            }
         }
 
 
