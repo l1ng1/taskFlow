@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
+import { useTasksStore } from './stores/tasks';
+
+const store = useTasksStore();
+
+  console.log(store.tasks);
+
+
+
+
 
 </script>
 

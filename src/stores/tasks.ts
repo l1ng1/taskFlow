@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type {Task , TaskPriority , CreateTaskDTO, ApiResponse, UpdateTaskDTO, TaskStatus} from '../types/index'
-
+import { useLocalStorage } from "../composables/useLocalStorage";
 
 export const useTasksStore = defineStore('tasks',{
     state:()=>{
@@ -47,7 +47,8 @@ export const useTasksStore = defineStore('tasks',{
                 
             }
             this.tasks.push(newTask);
-
+            
+            saveToStorage(this.tasks);
             return {
                 success:true,
                 data:newTask,
@@ -69,6 +70,7 @@ export const useTasksStore = defineStore('tasks',{
                 if (index === -1) return { success: false, data: null, error: 'Задача не найдена' }
 
                 this.tasks[index] = { ...this.tasks[index], ...dto, updatedAt: Date.now() } as Task
+                saveToStorage(this.tasks);
                 return { success: true, data: this.tasks[index], error: null }
             } catch(e){
                 return{success:false,data:null,error:"Не получилось обновить задание"}
@@ -80,6 +82,7 @@ export const useTasksStore = defineStore('tasks',{
                 const index = this.tasks.findIndex(task => task.id === id)
                 if(index === -1) return {success:false,data:false,error:'Задача не найдена'}
                 this.tasks.splice(index,1);
+                saveToStorage(this.tasks);
                 return {success:true,data:true,error:null}                
             } catch(e){
                 return {success:false,data:null,error:"не получилдось удалить задание"}
@@ -90,6 +93,7 @@ export const useTasksStore = defineStore('tasks',{
             const index = this.tasks.findIndex(task => task.id === id)
             if (index === -1) return
             this.tasks[index]!.status = status
+            saveToStorage(this.tasks);
         },
 
         clearCompleated(): ApiResponse<number>{
@@ -99,15 +103,30 @@ export const useTasksStore = defineStore('tasks',{
                 const deletedTasks = countBefore - this.tasks.length;
 
                 if(deletedTasks === 0) return {success:false,data:0,error:'Нет выполенных заданий'}
+                saveToStorage(this.tasks);
                 return {success:true,data:deletedTasks,error:null} 
             } catch(e){
                 return {success:false,data:null,error:'Не удалось удалить все выполненные задания'}
             }
+        },
+        loadFromStorage():void{
+            this.tasks = loadFromStorage()
         }
-
-
-
-
-
     }
 })
+
+
+const saveToStorage = (tasks: Task[])=>{
+    localStorage.setItem('tasks',JSON.stringify(tasks));
+}
+
+const loadFromStorage = ():Task[] =>{
+    try{
+        const storedData = localStorage.getItem('tasks');
+        return storedData ? JSON.parse(storedData) : []
+    }catch(e){
+        return []
+    }
+}
+
+
