@@ -1,27 +1,26 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue';
 import { useTasksStore } from './stores/tasks';
-
+import { useDebounce } from './composables/useDebounce';
 const store = useTasksStore();
 
-  console.log(store.tasks);
-
-
-
+const testInput = ref('');
+const devounceInput = useDebounce(testInput,500)
 
 
 </script>
 
 <template>
+  
+
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <input type="text" v-model="testInput">
+    <br>
+    {{ testInput }}
+    <br>
+    {{ devounceInput }}
   </div>
-  <HelloWorld msg="Vite + Vue" />
+
 </template>
 
 <style scoped>
