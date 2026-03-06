@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useTasksStore } from './stores/tasks';
 import { useDebounce } from './composables/useDebounce';
+import KanbanBoard from './components/KanbanBoard.vue';
 const store = useTasksStore();
 
 const testInput = ref('');
@@ -19,6 +20,9 @@ const devounceInput = useDebounce(testInput,500)
     {{ testInput }}
     <br>
     {{ devounceInput }}
+
+
+    <KanbanBoard></KanbanBoard>
   </div>
 
 </template>
