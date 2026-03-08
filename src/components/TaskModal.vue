@@ -1,7 +1,11 @@
 <template>
     <Teleport to="body">
         <div class="backdrop" @click="emit('close')">
-            <TaskForm @click.stop />
+            <TaskForm 
+            @click.stop 
+            :task="props.task ?? undefined" 
+            @submit="emit('submit', $event)" 
+            @cancel="emit('close')"/>
        </div>
     </Teleport>        
 </template>
@@ -9,9 +13,16 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
+import type { Task } from '../types';
 import TaskForm from './TaskForm.vue';
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close','submit'])
+
+interface Props{
+    task?:Task|null
+}
+const props = defineProps<Props>();
+
 
 onMounted(()=>{
     document.addEventListener('keydown',handleKeydown);

@@ -11,8 +11,8 @@
                 <p>Created:{{ formatedCreationDate }}</p>
                 <p>Updated:{{ formatedUpdatedDate }}</p>
             </div>
-            <button @click="emit('delete')">Delete</button>
-            <button @click="emit('edit')">Edit</button>
+            <button @click="onDelete(props.task.id)">Delete</button>
+            <button @click="onEdit(props.task)">Edit</button>
         </div>
 
 </template>
@@ -22,14 +22,15 @@
 import { computed } from 'vue';
 import type { Task } from '../types';
 import { useDragAndDrop } from '../composables/useDragAndDrop';
-
+import { inject } from 'vue';
 const dragAndDrop = useDragAndDrop();
 
 interface Props{
     task:Task
 }
-    const emit = defineEmits(['edit',"delete"])
-    const props = defineProps<Props>()
+const onDelete = inject<(id:string)=>void>('delete',()=>{})
+const onEdit = inject<(task:Task|null)=>void>('edit',()=>{});
+const props = defineProps<Props>()
 
 
 const formatedCreationDate = computed(() => {

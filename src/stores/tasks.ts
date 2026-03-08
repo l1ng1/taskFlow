@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type {Task , TaskPriority , CreateTaskDTO, ApiResponse, UpdateTaskDTO, TaskStatus} from '../types/index'
-import { useLocalStorage } from "../composables/useLocalStorage";
+
 
 export const useTasksStore = defineStore('tasks',{
     state:()=>{
@@ -12,8 +12,8 @@ export const useTasksStore = defineStore('tasks',{
         }
     },
     getters:{
-        tasksByStatus:(state)=>{
-            return state.tasks.reduce((acc,currentItem)=>{
+        tasksByStatus(state): Record<TaskStatus,Task[]>{
+            return this.filteredTasks.reduce((acc,currentItem)=>{
                 acc[currentItem.status].push(currentItem);
                 return acc;
             },{'todo':[] as Task[],'in-progress':[] as Task[],'done':[] as Task[]})
@@ -26,7 +26,7 @@ export const useTasksStore = defineStore('tasks',{
             }
         },
         filteredTasks:(state)=>{
-            return state.tasks.filter(item => ((state.filterPriority === 'all' || item.priority === state.filterPriority) && item.title.includes(state.searchQuery)))
+            return state.tasks.filter(item => ((state.filterPriority === 'all' || item.priority === state.filterPriority) && item.title.toLowerCase().includes(state.searchQuery.toLowerCase())))
         },
         completionPercentage(state):number{
             if (state.tasks.length === 0) return 0;
