@@ -40,4 +40,14 @@ function handleKeydown(event:KeyboardEvent){
 
 <style scoped>
 
+.backdrop{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: var(--color-modal);
+    width: 100%;
+    height: 100%;
+}
+
+
 </style>

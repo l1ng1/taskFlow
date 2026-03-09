@@ -42,6 +42,12 @@ const emit = defineEmits(["update:modelValue"])
 
 
 <style scoped>
-
+input,textarea{
+    outline: none;
+}
+textarea{
+    max-width: 310px;
+    min-width: 310px;
+}
 
 </style>

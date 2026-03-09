@@ -9,8 +9,6 @@
     </div>
 
 </div>
-
-
 </template>
 <script setup lang="ts">
 import TaskCard from './TaskCard.vue';
@@ -25,13 +23,26 @@ interface Props{
 }
 
 const props = defineProps<Props>();
-
-
-
-
-
 </script>
 <style scoped>
+
+.kanban_column{
+    background-color: var(--color-surface);
+    border-radius: 4px;
+    padding: 6px;
+    min-width: 260px;
+    max-width: 300px;
+}
+
+h2{
+    font-size: 19px;
+}
+
+.tasks{
+    display: flex;
+    flex-direction: column;
+    gap: 6px 0px;
+}
 
 
 </style>

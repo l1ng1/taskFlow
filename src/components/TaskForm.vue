@@ -2,20 +2,23 @@
 
 
 <form method="get">
-    <p>Title:</p><br>
-    <BaseInput :model-value="formData.title" type="text" @update:model-value="formData.title = $event;titleError=''" :error="titleError"/> <br>
-    <p>Description:</p><br>
-    <BaseInput type="textarea" :model-value="formData.description" @update:model-value="formData.description = $event" /> <br>
-    <p>Priority:</p><br>
+    <p>Title:</p>
+    <BaseInput :model-value="formData.title" type="text" @update:model-value="formData.title = $event;titleError=''" :error="titleError"/>
+    <p>Description:</p>
+    <BaseInput type="textarea" :model-value="formData.description" @update:model-value="formData.description = $event" /> 
+    <p>Priority:</p>
     <select v-model="formData.priority">
         <option value="low">low</option>
         <option value="medium">medium</option>
         <option value="high">high</option>
-    </select><br>
-    <p>Tags:</p><br>
+    </select>
+    <p>Tags:</p>
     <BaseInput :model-value="formData.tags.join(',')" type="text" placeholder="tag1,tag2,tag3,..." @update:model-value="formData.tags = $event.split(',').map((item:string)=> item.trim())"/>
-    <button @click="handleClick">Submit</button>
-    <button @click="emit('cancel')">Cancel</button>
+    <div class="btns">
+        <button class="submit" @click="handleClick">Submit</button>
+        <button class="cancel" @click="emit('cancel')">Cancel</button>
+    </div>
+    
     </form>
 
 </template>
@@ -63,4 +66,33 @@ const titleError = ref('');
 
 
 
-<style scoped></style>
+<style scoped>
+
+form{
+    width: 340px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px var(--color-border) solid;
+    border-radius: 6px;
+    padding: 6px;
+    color: var(--color-text-light);
+    background-color: var(--color-modal-bg);
+}
+.btns{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.btns button{
+    border:1px var(--color-border) solid;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+.submit{background-color: var(--color-btn-add);}
+.submit:hover{background-color: var(--color-btn-add-hover);}
+
+.cancel{background-color: var(--color-btn-delete);}
+.cancel:hover{background-color: var(--color-btn-delete-hover);}
+
+</style>

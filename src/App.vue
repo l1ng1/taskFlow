@@ -46,7 +46,7 @@ function handleSubmit(event:CreateTaskDTO){
         <option value="medium">medium</option>
         <option value="high">high</option>
       </select>
-      <button @click="modalStatus = true ;taskToEdit=null">Add Task</button>
+      <button class="add_task_buttton" @click="modalStatus = true ;taskToEdit=null">Add Task +</button>
     </div>
   </header>
   <main>
@@ -58,5 +58,33 @@ function handleSubmit(event:CreateTaskDTO){
 </template>
 
 <style scoped>
+
+header{
+display: flex;
+justify-content: center;
+gap: 0px 20px;
+}
+.search_section{
+  width: 40%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+main{
+  padding: 30px;
+}
+.add_task_buttton{
+  background-color: var(--color-btn-add);
+  border: 1px var(--color-border) solid;
+  border-radius: 5px;
+  padding: 3px 6px;
+}
+
+.add_task_buttton:hover{
+  background-color: var(--color-btn-add-hover);
+}
+
+
+
 
 </style>
